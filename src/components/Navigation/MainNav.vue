@@ -22,9 +22,9 @@
 </template>
 
 <script>
-import ActionButton from '@/components/ActionButton.vue'
-import ProfileImage from '@/components/ProfileImage.vue'
-import TheSubnav from '@/components/TheSubNav.vue'
+import ActionButton from '@/components/Shared/ActionButton.vue'
+import ProfileImage from '@/components/Navigation/ProfileImage.vue'
+import TheSubnav from '@/components/Navigation/TheSubNav.vue'
 
 export default {
   name: 'MainNav',
@@ -35,7 +35,7 @@ export default {
   },
   data() {
     return {
-      company: 'Tech Carreers',
+      company: 'Skynet Carreers',
       url: 'https://careers.google.com',
       menuItems: ['Teams', 'Locations', 'Life at Tech Carreers', 'How we hire', 'Students', 'Jobs'],
       isLoggedIn: false
