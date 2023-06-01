@@ -9,7 +9,7 @@ describe('JobListings', () => {
   it('fetches jobs', () => {
     axios.get.mockResolvedValue({ data: [] })
     render(JobListings)
-    expect(axios.get).toHaveBeenCalledWith('http://localhost:3000/jobs')
+    expect(axios.get).toHaveBeenCalledWith('http://myfakeapi.com/jobs')
   })
 
   it('creates a job listing', async () => {
