@@ -43,7 +43,7 @@ export default {
     return {
       company: 'Skynet Carreers',
       menuItems: [
-        { text: 'Teams', url: '/' },
+        { text: 'Teams', url: '/teams' },
         { text: 'Locations', url: '/' },
         { text: 'Life at Tech Carreers', url: '/' },
         { text: 'How we hire', url: '/' },
