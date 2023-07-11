@@ -28,48 +28,25 @@
   </main>
 </template>
 
-<script>
+<script setup>
 import JobListing from '@/components/JobResults/JobListing.vue'
-import { mapActions, mapState } from 'pinia'
-import { useJobsStore, FETCH_JOBS, FILTERED_JOBS } from '@/stores/jobs'
+import { useJobsStore } from '@/stores/jobs'
+import { computed, onMounted } from 'vue'
+import { useRoute } from 'vue-router'
+import usePreviousAndNextPage from '@/composables/usePreviousAndNextPage'
 
-export default {
-  name: 'JobListings',
-  components: {
-    JobListing
-  },
-  data() {
-    return {
-      baseUrl: import.meta.env.VITE_APP_API_URL
-    }
-  },
-  computed: {
-    currentPage() {
-      return Number.parseInt(this.$route.query.page || '1')
-    },
-    previousPage() {
-      const previousPage = this.currentPage - 1
-      return previousPage >= 1 ? previousPage : undefined
-    },
-    ...mapState(useJobsStore, {
-      FILTERED_JOBS,
-      nextPage() {
-        const nextPage = this.currentPage + 1
-        const maxPage = Math.ceil(this.FILTERED_JOBS.length / 10)
-        return nextPage <= maxPage ? nextPage : undefined
-      },
-      displayedJobs() {
-        const firstJobIndex = (this.currentPage - 1) * 10
-        const lastJobIndex = this.currentPage * 10
-        return this.FILTERED_JOBS.slice(firstJobIndex, lastJobIndex)
-      }
-    })
-  },
-  async mounted() {
-    this.FETCH_JOBS()
-  },
-  methods: {
-    ...mapActions(useJobsStore, [FETCH_JOBS])
-  }
-}
+const jobsStore = useJobsStore()
+onMounted(jobsStore.FETCH_JOBS)
+const FILTERED_JOBS = computed(() => jobsStore.FILTERED_JOBS)
+const route = useRoute()
+const currentPage = computed(() => Number.parseInt(route.query.page || '1'))
+const maxPage = computed(() => Math.ceil(FILTERED_JOBS.value?.length / 10))
+
+const { previousPage, nextPage } = usePreviousAndNextPage(currentPage, maxPage)
+
+const displayedJobs = computed(() => {
+  const firstJobIndex = (currentPage.value - 1) * 10
+  const lastJobIndex = currentPage.value * 10
+  return this.FILTERED_JOBS.slice(firstJobIndex, lastJobIndex)
+})
 </script>
