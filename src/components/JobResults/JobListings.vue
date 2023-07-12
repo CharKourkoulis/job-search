@@ -28,7 +28,7 @@
   </main>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 import JobListing from '@/components/JobResults/JobListing.vue'
 import { useJobsStore } from '@/stores/jobs'
 import { computed, onMounted } from 'vue'
@@ -39,7 +39,7 @@ const jobsStore = useJobsStore()
 onMounted(jobsStore.FETCH_JOBS)
 const FILTERED_JOBS = computed(() => jobsStore.FILTERED_JOBS)
 const route = useRoute()
-const currentPage = computed(() => Number.parseInt(route.query.page || '1'))
+const currentPage = computed(() => Number.parseInt((route.query.page as string) || '1'))
 const maxPage = computed(() => Math.ceil(FILTERED_JOBS.value?.length / 10))
 
 const { previousPage, nextPage } = usePreviousAndNextPage(currentPage, maxPage)
@@ -47,6 +47,6 @@ const { previousPage, nextPage } = usePreviousAndNextPage(currentPage, maxPage)
 const displayedJobs = computed(() => {
   const firstJobIndex = (currentPage.value - 1) * 10
   const lastJobIndex = currentPage.value * 10
-  return this.FILTERED_JOBS.slice(firstJobIndex, lastJobIndex)
+  return FILTERED_JOBS.value.slice(firstJobIndex, lastJobIndex)
 })
 </script>

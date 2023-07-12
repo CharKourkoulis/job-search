@@ -9,38 +9,25 @@
   </section>
 </template>
 
-<script>
+<script lang="ts" setup>
 import nextElementList from '@/utils/nextElementList'
-export default {
-  name: 'TheHeadline',
-  data() {
-    return {
-      action: 'Build',
-      interval: null
-    }
-  },
-  computed: {
-    actionClasses() {
-      return {
-        [this.action.toLocaleLowerCase()]: true
-      }
-    }
-  },
-  created() {
-    this.changeTitle()
-  },
-  beforeUnmount() {
-    clearInterval(this.interval)
-  },
-  methods: {
-    changeTitle() {
-      this.interval = setInterval(() => {
-        const actions = ['Build', 'Create', 'Design', 'Code']
-        this.action = nextElementList(actions, this.action)
-      }, 3000)
-    }
-  }
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+
+const action = ref('Build')
+const interval = ref<ReturnType<typeof setInterval>>()
+const actionClasses = computed(() => ({
+  [action.value.toLocaleLowerCase()]: true
+}))
+
+const changeTitle = (): void => {
+  interval.value = setInterval(() => {
+    const actions = ['Build', 'Create', 'Design', 'Code']
+    action.value = nextElementList(actions, action.value)
+  }, 3000)
 }
+
+onMounted(changeTitle)
+onBeforeUnmount(() => clearInterval(interval.value))
 </script>
 
 <style scoped>

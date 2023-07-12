@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { fileURLToPath, URL } from 'node:url'
 import Components from 'unplugin-vue-components/vite'
 
@@ -19,6 +20,6 @@ export default defineConfig({
   },
   test: {
     globals: true,
-    setupFiles: ['./test/setup.js']
+    setupFiles: ['./test/setup.ts']
   }
 })
