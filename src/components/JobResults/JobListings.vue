@@ -31,12 +31,15 @@
 <script lang="ts" setup>
 import JobListing from '@/components/JobResults/JobListing.vue'
 import { useJobsStore } from '@/stores/jobs'
+import { useDegreeStore } from '@/stores/degrees'
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import usePreviousAndNextPage from '@/composables/usePreviousAndNextPage'
 
 const jobsStore = useJobsStore()
+const degreeStore = useDegreeStore()
 onMounted(jobsStore.FETCH_JOBS)
+onMounted(degreeStore.FETCH_DEGREES)
 const FILTERED_JOBS = computed(() => jobsStore.FILTERED_JOBS)
 const route = useRoute()
 const currentPage = computed(() => Number.parseInt((route.query.page as string) || '1'))
