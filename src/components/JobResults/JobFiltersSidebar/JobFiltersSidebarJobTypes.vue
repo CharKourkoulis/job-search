@@ -1,39 +1,17 @@
 <template>
-  <collapsible-accordion header="Job Types">
-    <div class="mt-5">
-      <fieldset>
-        <ul class="flex flex-row flex-wrap">
-          <li v-for="jobType in UNIQUE_JOB_TYPES" :key="jobType" class="h-8 w-1/2">
-            <input
-              :id="jobType"
-              v-model="selectedJobTypes"
-              :value="jobType"
-              type="checkbox"
-              class="mr-3"
-              @change="selectJobType"
-            />
-            <label :for="jobType">{{ jobType }}</label>
-          </li>
-        </ul>
-      </fieldset>
-    </div>
-  </collapsible-accordion>
+  <job-filters-sidebar-checkbox-group
+    :unique-values="UNIQUE_JOB_TYPES"
+    :action="userStore.ADD_SELECTED_JOB_TYPES"
+  />
 </template>
 
-<script setup>
-import CollapsibleAccordion from '@/components/Shared/CollapsibleAccordion.vue'
-import { useJobsStore } from '@/stores/jobs'
+<script lang="ts" setup>
+import { computed } from 'vue'
+import JobFiltersSidebarCheckboxGroup from '@/components/JobResults/JobFiltersSidebar/JobFiltersSidebarCheckboxGroup.vue'
 import { useUserStore } from '@/stores/user'
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { useJobsStore } from '@/stores/jobs'
 
-const selectedJobTypes = ref([])
+const userStore = useUserStore()
 const jobsStore = useJobsStore()
 const UNIQUE_JOB_TYPES = computed(() => jobsStore.UNIQUE_JOB_TYPES)
-const userStore = useUserStore()
-const router = useRouter()
-const selectJobType = () => {
-  userStore.ADD_SELECTED_JOB_TYPES(selectedJobTypes.value)
-  router.push({ name: 'JobResults' })
-}
 </script>
